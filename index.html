@@ -10,9 +10,14 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-style: normal !important;
         }
 
 ```
+    em, i, cite, var, dfn, address {
+        font-style: normal !important;
+    }
+
     body {
         font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', sans-serif;
         background: #000000 !important;
@@ -20,6 +25,7 @@
         min-height: 100vh;
         padding: 20px;
         -webkit-font-smoothing: antialiased;
+        font-style: normal !important;
     }
 
     html {
@@ -410,11 +416,13 @@
         font-weight: 600;
         font-size: 16px;
         color: #ffffff !important;
+        font-style: normal !important;
     }
 
     .template-meta {
         font-size: 12px;
         color: rgba(255, 255, 255, 0.6) !important;
+        font-style: normal !important;
     }
 
     .item-count {
@@ -539,11 +547,14 @@
     .template-title {
         font-weight: 600;
         font-size: 16px;
+        color: #ffffff !important;
+        font-style: normal !important;
     }
 
     .template-meta {
         font-size: 12px;
-        color: rgba(255, 255, 255, 0.6);
+        color: rgba(255, 255, 255, 0.6) !important;
+        font-style: normal !important;
     }
 
     .template-actions {
@@ -608,12 +619,39 @@
             bottom: 0;
             width: 80%;
             max-width: 320px;
-            background: rgba(0, 0, 0, 0.98);
+            background: rgba(0, 0, 0, 0.95);
             border: 1px solid rgba(255, 255, 255, 0.1);
             padding: 20px;
             z-index: 100;
             overflow-y: auto;
             transition: transform 0.3s ease;
+        }
+
+        /* Kleinere und durchsichtigere Buttons im Portrait-Modus */
+        .sidebar-button {
+            padding: 10px 14px;
+            font-size: 13px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 6px;
+        }
+
+        .sidebar-button:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .sidebar-button.active {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .sidebar-button small {
+            font-size: 10px;
+        }
+
+        .item-count {
+            font-size: 11px;
+            padding: 1px 6px;
         }
 
         .left-sidebar {
@@ -661,18 +699,18 @@
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.2);
             color: white !important;
-            padding: 20px 12px;
+            padding: 16px 8px;
             cursor: pointer;
-            font-size: 18px;
+            font-size: 14px;
             font-weight: 500;
             transition: all 0.3s ease;
             writing-mode: vertical-rl;
             text-orientation: mixed;
-            border-radius: 0 12px 12px 0;
+            border-radius: 0 10px 10px 0;
         }
 
         .toggle-right .toggle-btn {
-            border-radius: 12px 0 0 12px;
+            border-radius: 10px 0 0 10px;
             writing-mode: vertical-lr;
         }
 
@@ -706,6 +744,8 @@
 
         .main-content {
             padding-top: 20px;
+            padding-left: 50px;
+            padding-right: 50px;
         }
     }
 
@@ -757,33 +797,32 @@
         <aside class="sidebar right-sidebar" id="rightSidebar">
             <div class="sidebar-section">
                 <div class="sidebar-button" onclick="filterView('all')">Alle Aufgaben</div>
-                <div class="sidebar-button" onclick="filterView('active')">Nur Aktive</div>
                 <div class="sidebar-button" onclick="filterView('deadline')">Nach Deadline</div>
                 <div class="sidebar-button" onclick="filterView('category')">Nach Kategorie</div>
             </div>
 
             <div class="sidebar-section">
-                <div class="sidebar-button stat-item" onclick="filterUrgency('open')">
+                <div class="sidebar-button stat-item" onclick="filterUrgency('open', this)">
                     <span>Offen</span>
                     <span class="item-count" id="openCount">0</span>
                 </div>
-                <div class="sidebar-button stat-item" onclick="filterUrgency('completed')">
+                <div class="sidebar-button stat-item" onclick="filterUrgency('completed', this)">
                     <span>Erledigt</span>
                     <span class="item-count" id="completedCount">0</span>
                 </div>
-                <div class="sidebar-button stat-item" onclick="filterUrgency('critical')">
+                <div class="sidebar-button stat-item" onclick="filterUrgency('critical', this)">
                     <span>Kritisch <small>(≤1 Tag Puffer)</small></span>
                     <span class="item-count" id="criticalCount">0</span>
                 </div>
-                <div class="sidebar-button stat-item" onclick="filterUrgency('urgent')">
+                <div class="sidebar-button stat-item" onclick="filterUrgency('urgent', this)">
                     <span>Dringend <small>(≤3 Tage Puffer)</small></span>
                     <span class="item-count" id="urgentCount">0</span>
                 </div>
-                <div class="sidebar-button stat-item" onclick="filterUrgency('soon')">
+                <div class="sidebar-button stat-item" onclick="filterUrgency('soon', this)">
                     <span>Bald <small>(≤7 Tage Puffer)</small></span>
                     <span class="item-count" id="soonCount">0</span>
                 </div>
-                <div class="sidebar-button stat-item" onclick="filterUrgency('relaxed')">
+                <div class="sidebar-button stat-item" onclick="filterUrgency('relaxed', this)">
                     <span>Entspannt <small>(>7 Tage Puffer)</small></span>
                     <span class="item-count" id="relaxedCount">0</span>
                 </div>
@@ -1021,13 +1060,10 @@
         const grid = document.getElementById('tasksGrid');
         let filteredTasks = [...tasks];
 
-        // Apply filters
-        if (currentFilter === 'active') {
-            filteredTasks = filteredTasks.filter(t => !t.completed && !t.parentId);
-        } else {
-            filteredTasks = filteredTasks.filter(t => !t.parentId);
-        }
+        // Filter nur Parent-Tasks (keine Subtasks)
+        filteredTasks = filteredTasks.filter(t => !t.parentId);
 
+        // Apply filters
         if (currentUrgencyFilter === 'open') {
             filteredTasks = filteredTasks.filter(t => !t.completed);
         } else if (currentUrgencyFilter === 'completed') {
@@ -1154,27 +1190,61 @@
 
     // Filter functions
     function filterView(view) {
-        currentFilter = view;
+        // Toggle: wenn bereits aktiv, zurück zu 'all'
+        if (currentFilter === view && view !== 'all') {
+            currentFilter = 'all';
+        } else {
+            currentFilter = view;
+        }
+        
         currentUrgencyFilter = null;
         currentCategoryFilter = null;
         
-        // Update active state
-        document.querySelectorAll('.sidebar-item').forEach(item => {
-            item.classList.remove('active');
+        // Update active state für alle View-Buttons
+        const viewButtons = document.querySelectorAll('.right-sidebar .sidebar-section:first-child .sidebar-button');
+        viewButtons.forEach((btn, index) => {
+            btn.classList.remove('active');
+            const views = ['all', 'deadline', 'category'];
+            if (views[index] === currentFilter) {
+                btn.classList.add('active');
+            }
         });
-        event.target.classList.add('active');
         
         renderTasks();
+        updateCategories();
     }
 
-    function filterUrgency(urgency) {
-        currentUrgencyFilter = urgency;
+    function filterUrgency(urgency, element) {
+        // Toggle: wenn bereits aktiv, deaktivieren
+        if (currentUrgencyFilter === urgency) {
+            currentUrgencyFilter = null;
+        } else {
+            currentUrgencyFilter = urgency;
+        }
+        
         currentCategoryFilter = null;
+        
+        // Update active state für alle Urgency-Buttons
+        const urgencyButtons = document.querySelectorAll('.right-sidebar .sidebar-section:last-child .sidebar-button');
+        urgencyButtons.forEach(btn => {
+            btn.classList.remove('active');
+        });
+        
+        if (currentUrgencyFilter && element) {
+            element.classList.add('active');
+        }
+        
         renderTasks();
     }
 
     function filterCategory(category) {
-        currentCategoryFilter = currentCategoryFilter === category ? null : category;
+        // Toggle: wenn bereits aktiv, deaktivieren
+        if (currentCategoryFilter === category) {
+            currentCategoryFilter = null;
+        } else {
+            currentCategoryFilter = category;
+        }
+        
         currentUrgencyFilter = null;
         updateCategories();
         renderTasks();
