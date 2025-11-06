@@ -133,9 +133,26 @@
 
     .tasks-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
         gap: 16px;
         margin-top: 20px;
+    }
+
+    /* Horizontal: Multiple columns for tasks */
+    @media (orientation: landscape) {
+        .tasks-grid {
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        }
+    }
+
+    /* Vertical: Single column, focus on task viewing */
+    @media (orientation: portrait) {
+        .tasks-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .task-card {
+            padding: 14px;
+        }
     }
 
     /* Task Card */
@@ -354,7 +371,104 @@
         font-size: 14px;
         font-weight: 500;
         margin-bottom: 8px;
-        color: rgba(255, 255, 255, 0.8);
+        color: #ffffff !important;
+    }
+
+    .sidebar-title {
+        font-size: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: rgba(255, 255, 255, 0.7) !important;
+        margin-bottom: 12px;
+    }
+
+    .modal-header {
+        font-size: 24px;
+        font-weight: 600;
+        margin-bottom: 20px;
+        color: #ffffff !important;
+    }
+
+    .task-title {
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 8px;
+        flex-grow: 1;
+        color: #ffffff !important;
+    }
+
+    .task-category {
+        display: inline-block;
+        padding: 4px 10px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 6px;
+        font-size: 12px;
+        margin-bottom: 8px;
+        color: #ffffff !important;
+    }
+
+    .task-deadline {
+        font-size: 13px;
+        color: rgba(255, 255, 255, 0.8) !important;
+        margin-bottom: 4px;
+    }
+
+    .task-time {
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.6) !important;
+        margin-bottom: 8px;
+    }
+
+    .task-description {
+        font-size: 13px;
+        color: rgba(255, 255, 255, 0.7) !important;
+        margin-top: 8px;
+        line-height: 1.4;
+    }
+
+    .template-title {
+        font-weight: 600;
+        font-size: 16px;
+        color: #ffffff !important;
+    }
+
+    .template-meta {
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.6) !important;
+    }
+
+    .item-count {
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.6) !important;
+    }
+
+    .sidebar-button {
+        width: 100%;
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        color: white !important;
+        padding: 12px 16px;
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 500;
+        transition: all 0.2s ease;
+        margin-bottom: 8px;
+        text-align: left;
+    }
+
+    .sidebar-item {
+        padding: 10px 12px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 14px;
+        margin-bottom: 4px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: all 0.2s ease;
+        color: #ffffff !important;
     }
 
     .form-group input,
@@ -363,11 +477,21 @@
         width: 100%;
         background: rgba(255, 255, 255, 0.05);
         border: 1px solid rgba(255, 255, 255, 0.2);
-        color: white;
+        color: white !important;
         padding: 12px;
         border-radius: 10px;
         font-size: 14px;
         font-family: inherit;
+    }
+
+    .form-group input::placeholder,
+    .form-group textarea::placeholder {
+        color: rgba(255, 255, 255, 0.4);
+    }
+
+    .form-group select option {
+        background: #1a1a1a;
+        color: white;
     }
 
     .form-group textarea {
@@ -400,28 +524,6 @@
         align-items: center;
         gap: 8px;
         cursor: pointer;
-    }
-
-    .weekdays {
-        display: flex;
-        gap: 8px;
-        margin-top: 8px;
-        flex-wrap: wrap;
-    }
-
-    .weekday-btn {
-        padding: 8px 12px;
-        background: rgba(255, 255, 255, 0.05);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        border-radius: 8px;
-        cursor: pointer;
-        font-size: 13px;
-        transition: all 0.2s ease;
-    }
-
-    .weekday-btn.active {
-        background: white;
-        color: black;
     }
 
     .modal-actions {
@@ -476,39 +578,159 @@
         font-size: 13px;
     }
 
-    /* Responsive */
-    @media (max-width: 1200px) {
+    /* Horizontal (Landscape) Layout - 3 Columns */
+    @media (orientation: landscape) {
         .main-layout {
-            grid-template-columns: 1fr;
+            display: grid;
+            grid-template-columns: 250px 1fr 250px;
+            gap: 20px;
+            align-items: start;
         }
 
         .sidebar {
-            position: relative;
-            top: 0;
-            margin-bottom: 20px;
+            display: block !important;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 20px;
+            position: sticky;
+            top: 20px;
+        }
+
+        .sidebar-toggle {
+            display: none;
+        }
+
+        .left-sidebar {
+            grid-column: 1;
+        }
+
+        .main-content {
+            grid-column: 2;
+        }
+
+        .right-sidebar {
+            grid-column: 3;
         }
     }
 
-    @media (max-width: 768px) {
-        .tasks-grid {
+    /* Vertical (Portrait) Layout - Collapsible Sidebars */
+    @media (orientation: portrait) {
+        .main-layout {
+            display: grid;
             grid-template-columns: 1fr;
+            gap: 0;
+        }
+
+        .sidebar {
+            display: none;
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            width: 80%;
+            max-width: 320px;
+            background: rgba(0, 0, 0, 0.98);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            z-index: 100;
+            overflow-y: auto;
+            transition: transform 0.3s ease;
+        }
+
+        .left-sidebar {
+            left: 0;
+            border-radius: 0 16px 16px 0;
+            transform: translateX(-100%);
+        }
+
+        .left-sidebar.open {
+            display: block;
+            transform: translateX(0);
+        }
+
+        .right-sidebar {
+            right: 0;
+            border-radius: 16px 0 0 16px;
+            transform: translateX(100%);
+        }
+
+        .right-sidebar.open {
+            display: block;
+            transform: translateX(0);
+        }
+
+        .sidebar-toggle {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 90;
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+
+        .toggle-left {
+            left: 0;
+        }
+
+        .toggle-right {
+            right: 0;
+        }
+
+        .toggle-btn {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white !important;
+            padding: 20px 12px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            border-radius: 0 12px 12px 0;
+        }
+
+        .toggle-right .toggle-btn {
+            border-radius: 12px 0 0 12px;
+            writing-mode: vertical-lr;
+        }
+
+        .toggle-btn.active {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .toggle-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 99;
+        }
+
+        .sidebar-overlay.active {
+            display: block;
         }
 
         body {
             padding: 10px;
         }
 
-        header {
-            margin-bottom: 20px;
-            padding: 20px 0;
-        }
-
         h1 {
             font-size: 32px;
         }
 
-        .sidebar {
-            padding: 16px;
+        .main-content {
+            padding-top: 20px;
         }
     }
 
@@ -528,8 +750,19 @@
 
 ```
     <div class="main-layout">
+        <!-- Floating Toggle Buttons for Portrait Mode -->
+        <div class="sidebar-toggle toggle-left">
+            <button class="toggle-btn" onclick="toggleSidebar('left')">Menü</button>
+        </div>
+        <div class="sidebar-toggle toggle-right">
+            <button class="toggle-btn" onclick="toggleSidebar('right')">Filter</button>
+        </div>
+
+        <!-- Overlay for closing sidebars -->
+        <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebars()"></div>
+
         <!-- Left Sidebar -->
-        <aside class="sidebar">
+        <aside class="sidebar left-sidebar" id="leftSidebar">
             <div class="sidebar-section">
                 <div class="sidebar-title">Aktionen</div>
                 <button class="sidebar-button" onclick="openTaskModal()">+ Neue Aufgabe</button>
@@ -541,11 +774,8 @@
             </div>
 
             <div class="sidebar-section">
-                <div class="sidebar-title">Ansicht</div>
-                <div class="sidebar-item active" onclick="filterView('all')">Alle Aufgaben</div>
-                <div class="sidebar-item" onclick="filterView('active')">Nur Aktive</div>
-                <div class="sidebar-item" onclick="filterView('deadline')">Nach Deadline</div>
-                <div class="sidebar-item" onclick="filterView('category')">Nach Kategorie</div>
+                <div class="sidebar-title">Kategorien</div>
+                <div id="categoriesList"></div>
             </div>
         </aside>
 
@@ -555,10 +785,13 @@
         </main>
 
         <!-- Right Sidebar -->
-        <aside class="sidebar">
+        <aside class="sidebar right-sidebar" id="rightSidebar">
             <div class="sidebar-section">
-                <div class="sidebar-title">Kategorien</div>
-                <div id="categoriesList"></div>
+                <div class="sidebar-title">Ansicht</div>
+                <div class="sidebar-item active" onclick="filterView('all')">Alle Aufgaben</div>
+                <div class="sidebar-item" onclick="filterView('active')">Nur Aktive</div>
+                <div class="sidebar-item" onclick="filterView('deadline')">Nach Deadline</div>
+                <div class="sidebar-item" onclick="filterView('category')">Nach Kategorie</div>
             </div>
 
             <div class="sidebar-section">
@@ -634,38 +867,6 @@
             <div class="form-group">
                 <label for="taskDescription">Beschreibung</label>
                 <textarea id="taskDescription"></textarea>
-            </div>
-
-            <div class="form-group">
-                <div class="checkbox-label">
-                    <input type="checkbox" id="taskRepeat" onchange="toggleRepeatOptions()">
-                    <label for="taskRepeat">Wiederholen</label>
-                </div>
-            </div>
-
-            <div id="repeatOptions" style="display: none;">
-                <div class="form-group">
-                    <label for="repeatInterval">Intervall</label>
-                    <select id="repeatInterval">
-                        <option value="1">Jede Woche</option>
-                        <option value="2">Alle 2 Wochen</option>
-                        <option value="3">Alle 3 Wochen</option>
-                        <option value="4">Alle 4 Wochen</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label>Wochentage</label>
-                    <div class="weekdays">
-                        <button type="button" class="weekday-btn" data-day="1" onclick="toggleWeekday(this)">Mo</button>
-                        <button type="button" class="weekday-btn" data-day="2" onclick="toggleWeekday(this)">Di</button>
-                        <button type="button" class="weekday-btn" data-day="3" onclick="toggleWeekday(this)">Mi</button>
-                        <button type="button" class="weekday-btn" data-day="4" onclick="toggleWeekday(this)">Do</button>
-                        <button type="button" class="weekday-btn" data-day="5" onclick="toggleWeekday(this)">Fr</button>
-                        <button type="button" class="weekday-btn" data-day="6" onclick="toggleWeekday(this)">Sa</button>
-                        <button type="button" class="weekday-btn" data-day="0" onclick="toggleWeekday(this)">So</button>
-                    </div>
-                </div>
             </div>
 
             <div class="modal-actions">
@@ -1037,25 +1238,9 @@
                 document.getElementById('taskEndTime').value = task.endTime || '';
                 document.getElementById('taskDuration').value = task.duration || '';
                 document.getElementById('taskDescription').value = task.description || '';
-                document.getElementById('taskRepeat').checked = task.repeat || false;
-                
-                if (task.repeat) {
-                    document.getElementById('repeatOptions').style.display = 'block';
-                    document.getElementById('repeatInterval').value = task.repeatInterval || '1';
-                    
-                    // Set weekdays
-                    document.querySelectorAll('.weekday-btn').forEach(btn => {
-                        btn.classList.remove('active');
-                        if (task.repeatDays && task.repeatDays.includes(parseInt(btn.dataset.day))) {
-                            btn.classList.add('active');
-                        }
-                    });
-                }
             }
         } else {
             document.getElementById('taskForm').reset();
-            document.getElementById('repeatOptions').style.display = 'none';
-            document.querySelectorAll('.weekday-btn').forEach(btn => btn.classList.remove('active'));
         }
         
         modal.classList.add('active');
@@ -1064,15 +1249,6 @@
     function closeTaskModal() {
         document.getElementById('taskModal').classList.remove('active');
         editingTaskId = null;
-    }
-
-    function toggleRepeatOptions() {
-        const checked = document.getElementById('taskRepeat').checked;
-        document.getElementById('repeatOptions').style.display = checked ? 'block' : 'none';
-    }
-
-    function toggleWeekday(button) {
-        button.classList.toggle('active');
     }
 
     function saveTask(event) {
@@ -1085,20 +1261,6 @@
         const endTime = document.getElementById('taskEndTime').value;
         const duration = parseFloat(document.getElementById('taskDuration').value) || 0;
         const description = document.getElementById('taskDescription').value;
-        const repeat = document.getElementById('taskRepeat').checked;
-        
-        let repeatData = {};
-        if (repeat) {
-            const repeatInterval = document.getElementById('repeatInterval').value;
-            const repeatDays = Array.from(document.querySelectorAll('.weekday-btn.active'))
-                .map(btn => parseInt(btn.dataset.day));
-            
-            repeatData = {
-                repeat: true,
-                repeatInterval,
-                repeatDays
-            };
-        }
 
         if (editingTaskId) {
             // Update existing task
@@ -1111,8 +1273,7 @@
                     startTime,
                     endTime,
                     duration,
-                    description,
-                    ...repeatData
+                    description
                 });
             }
         } else {
@@ -1127,8 +1288,7 @@
                 duration,
                 description,
                 completed: false,
-                createdAt: new Date().toISOString(),
-                ...repeatData
+                createdAt: new Date().toISOString()
             };
             tasks.push(task);
         }
@@ -1342,6 +1502,98 @@
     loadData();
     renderTasks();
     updateCategories();
+
+    // Toggle sidebar for portrait mode
+    function toggleSidebar(side) {
+        const leftSidebar = document.getElementById('leftSidebar');
+        const rightSidebar = document.getElementById('rightSidebar');
+        const overlay = document.getElementById('sidebarOverlay');
+        const leftBtn = document.querySelector('.toggle-left .toggle-btn');
+        const rightBtn = document.querySelector('.toggle-right .toggle-btn');
+        
+        if (side === 'left') {
+            const isOpen = leftSidebar.classList.contains('open');
+            
+            if (isOpen) {
+                leftSidebar.classList.remove('open');
+                overlay.classList.remove('active');
+                leftBtn.classList.remove('active');
+            } else {
+                leftSidebar.classList.add('open');
+                rightSidebar.classList.remove('open');
+                overlay.classList.add('active');
+                leftBtn.classList.add('active');
+                rightBtn.classList.remove('active');
+            }
+        } else {
+            const isOpen = rightSidebar.classList.contains('open');
+            
+            if (isOpen) {
+                rightSidebar.classList.remove('open');
+                overlay.classList.remove('active');
+                rightBtn.classList.remove('active');
+            } else {
+                rightSidebar.classList.add('open');
+                leftSidebar.classList.remove('open');
+                overlay.classList.add('active');
+                rightBtn.classList.add('active');
+                leftBtn.classList.remove('active');
+            }
+        }
+    }
+
+    // Close all sidebars
+    function closeSidebars() {
+        document.getElementById('leftSidebar').classList.remove('open');
+        document.getElementById('rightSidebar').classList.remove('open');
+        document.getElementById('sidebarOverlay').classList.remove('active');
+        document.querySelector('.toggle-left .toggle-btn').classList.remove('active');
+        document.querySelector('.toggle-right .toggle-btn').classList.remove('active');
+    }
+
+    // Close sidebars when clicking on a filter/action in portrait mode
+    const originalFilterView = filterView;
+    filterView = function(view) {
+        originalFilterView.call(this, view);
+        if (window.matchMedia("(orientation: portrait)").matches) {
+            closeSidebars();
+        }
+    };
+
+    const originalFilterUrgency = filterUrgency;
+    filterUrgency = function(urgency) {
+        originalFilterUrgency.call(this, urgency);
+        if (window.matchMedia("(orientation: portrait)").matches) {
+            closeSidebars();
+        }
+    };
+
+    const originalFilterCategory = filterCategory;
+    filterCategory = function(category) {
+        originalFilterCategory.call(this, category);
+        if (window.matchMedia("(orientation: portrait)").matches) {
+            closeSidebars();
+        }
+    };
+
+    // Close sidebars when opening modals
+    const originalOpenTaskModal = openTaskModal;
+    openTaskModal = function(taskId) {
+        closeSidebars();
+        originalOpenTaskModal.call(this, taskId);
+    };
+
+    const originalOpenTemplateModal = openTemplateModal;
+    openTemplateModal = function() {
+        closeSidebars();
+        originalOpenTemplateModal.call(this);
+    };
+
+    const originalOpenTemplateManager = openTemplateManager;
+    openTemplateManager = function() {
+        closeSidebars();
+        originalOpenTemplateManager.call(this);
+    };
 </script>
 ```
 
