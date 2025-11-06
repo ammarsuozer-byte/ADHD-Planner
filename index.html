@@ -92,22 +92,8 @@
     .sidebar-button small {
         font-size: 11px;
         font-weight: 400;
-        color: rgba(255, 255, 255, 0.8) !important;
-    }
-
-    .item-count {
-        font-size: 12px;
-        color: #ffffff !important;
-        font-weight: 600;
-        background: rgba(255, 255, 255, 0.1);
-        padding: 2px 8px;
-        border-radius: 6px;
-    }
-
-    .sidebar-button small {
-        font-size: 11px;
-        font-weight: 400;
-        color: rgba(255, 255, 255, 0.8) !important;
+        color: rgba(255, 255, 255, 0.7) !important;
+        margin-left: 4px;
     }
 
     .item-count {
@@ -786,19 +772,19 @@
                     <span class="item-count" id="completedCount">0</span>
                 </div>
                 <div class="sidebar-button stat-item" onclick="filterUrgency('critical')">
-                    <span>🔴 Kritisch<br><small style="opacity: 0.7;">≤1 Tag Puffer</small></span>
+                    <span>Kritisch <small>(≤1 Tag Puffer)</small></span>
                     <span class="item-count" id="criticalCount">0</span>
                 </div>
                 <div class="sidebar-button stat-item" onclick="filterUrgency('urgent')">
-                    <span>🟠 Dringend<br><small style="opacity: 0.7;">≤3 Tage Puffer</small></span>
+                    <span>Dringend <small>(≤3 Tage Puffer)</small></span>
                     <span class="item-count" id="urgentCount">0</span>
                 </div>
                 <div class="sidebar-button stat-item" onclick="filterUrgency('soon')">
-                    <span>🟡 Bald<br><small style="opacity: 0.7;">≤7 Tage Puffer</small></span>
+                    <span>Bald <small>(≤7 Tage Puffer)</small></span>
                     <span class="item-count" id="soonCount">0</span>
                 </div>
                 <div class="sidebar-button stat-item" onclick="filterUrgency('relaxed')">
-                    <span>🟢 Entspannt<br><small style="opacity: 0.7;">>7 Tage Puffer</small></span>
+                    <span>Entspannt <small>(>7 Tage Puffer)</small></span>
                     <span class="item-count" id="relaxedCount">0</span>
                 </div>
             </div>
