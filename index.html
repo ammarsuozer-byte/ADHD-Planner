@@ -15,11 +15,15 @@
 ```
     body {
         font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', sans-serif;
-        background: #000000;
+        background: #000000 !important;
         color: #ffffff;
         min-height: 100vh;
         padding: 20px;
         -webkit-font-smoothing: antialiased;
+    }
+
+    html {
+        background: #000000 !important;
     }
 
     .container {
@@ -481,12 +485,30 @@
         .sidebar {
             position: relative;
             top: 0;
+            margin-bottom: 20px;
         }
     }
 
     @media (max-width: 768px) {
         .tasks-grid {
             grid-template-columns: 1fr;
+        }
+
+        body {
+            padding: 10px;
+        }
+
+        header {
+            margin-bottom: 20px;
+            padding: 20px 0;
+        }
+
+        h1 {
+            font-size: 32px;
+        }
+
+        .sidebar {
+            padding: 16px;
         }
     }
 
@@ -833,7 +855,9 @@
 
         // Apply filters
         if (currentFilter === 'active') {
-            filteredTasks = filteredTasks.filter(t => !t.completed);
+            filteredTasks = filteredTasks.filter(t => !t.completed && !t.parentId);
+        } else {
+            filteredTasks = filteredTasks.filter(t => !t.parentId);
         }
 
         if (currentUrgencyFilter === 'open') {
@@ -860,6 +884,18 @@
             if (!b.deadline) return -1;
             return new Date(a.deadline) - new Date(b.deadline);
         });
+
+        if (filteredTasks.length === 0) {
+            grid.innerHTML = `
+                <div style="grid-column: 1/-1; text-align: center; padding: 60px 20px; color: rgba(255,255,255,0.5);">
+                    <div style="font-size: 48px; margin-bottom: 16px;">📋</div>
+                    <div style="font-size: 18px; font-weight: 500; margin-bottom: 8px;">Keine Aufgaben</div>
+                    <div style="font-size: 14px;">Erstelle deine erste Aufgabe mit dem + Button</div>
+                </div>
+            `;
+            updateStats();
+            return;
+        }
 
         grid.innerHTML = filteredTasks.map(task => {
             const urgency = calculateUrgency(task);
