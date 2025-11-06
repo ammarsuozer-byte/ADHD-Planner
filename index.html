@@ -31,20 +31,6 @@
         margin: 0 auto;
     }
 
-    /* Header */
-    header {
-        text-align: center;
-        margin-bottom: 40px;
-        padding: 30px 0;
-    }
-
-    h1 {
-        font-size: 42px;
-        font-weight: 600;
-        letter-spacing: -0.5px;
-        color: #ffffff;
-    }
-
     /* Desktop Layout - 3 Columns */
     .main-layout {
         display: grid;
@@ -71,20 +57,11 @@
         margin-bottom: 0;
     }
 
-    .sidebar-title {
-        font-size: 12px;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        color: rgba(255, 255, 255, 0.5);
-        margin-bottom: 12px;
-    }
-
     .sidebar-button {
         width: 100%;
         background: rgba(255, 255, 255, 0.08);
         border: 1px solid rgba(255, 255, 255, 0.15);
-        color: white;
+        color: white !important;
         padding: 12px 16px;
         border-radius: 10px;
         cursor: pointer;
@@ -93,6 +70,7 @@
         transition: all 0.2s ease;
         margin-bottom: 8px;
         text-align: left;
+        display: block;
     }
 
     .sidebar-button:hover {
@@ -100,30 +78,45 @@
         transform: translateX(2px);
     }
 
-    .sidebar-item {
-        padding: 10px 12px;
-        border-radius: 8px;
-        cursor: pointer;
-        font-size: 14px;
-        margin-bottom: 4px;
+    .sidebar-button.active {
+        background: rgba(255, 255, 255, 0.15);
+        border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    .sidebar-button.stat-item {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        transition: all 0.2s ease;
     }
 
-    .sidebar-item:hover {
-        background: rgba(255, 255, 255, 0.08);
-    }
-
-    .sidebar-item.active {
-        background: rgba(255, 255, 255, 0.15);
-        font-weight: 600;
+    .sidebar-button small {
+        font-size: 11px;
+        font-weight: 400;
+        color: rgba(255, 255, 255, 0.8) !important;
     }
 
     .item-count {
         font-size: 12px;
-        color: rgba(255, 255, 255, 0.6);
+        color: #ffffff !important;
+        font-weight: 600;
+        background: rgba(255, 255, 255, 0.1);
+        padding: 2px 8px;
+        border-radius: 6px;
+    }
+
+    .sidebar-button small {
+        font-size: 11px;
+        font-weight: 400;
+        color: rgba(255, 255, 255, 0.8) !important;
+    }
+
+    .item-count {
+        font-size: 12px;
+        color: #ffffff !important;
+        font-weight: 600;
+        background: rgba(255, 255, 255, 0.1);
+        padding: 2px 8px;
+        border-radius: 6px;
     }
 
     /* Main Content */
@@ -725,10 +718,6 @@
             padding: 10px;
         }
 
-        h1 {
-            font-size: 32px;
-        }
-
         .main-content {
             padding-top: 20px;
         }
@@ -744,27 +733,22 @@
 </head>
 <body>
     <div class="container">
-        <header>
-            <h1>Aufgaben</h1>
-        </header>
+        <div class="main-layout">
+            <!-- Floating Toggle Buttons for Portrait Mode -->
+            <div class="sidebar-toggle toggle-left">
+                <button class="toggle-btn" onclick="toggleSidebar('left')">Menü</button>
+            </div>
+            <div class="sidebar-toggle toggle-right">
+                <button class="toggle-btn" onclick="toggleSidebar('right')">Filter</button>
+            </div>
 
 ```
-    <div class="main-layout">
-        <!-- Floating Toggle Buttons for Portrait Mode -->
-        <div class="sidebar-toggle toggle-left">
-            <button class="toggle-btn" onclick="toggleSidebar('left')">Menü</button>
-        </div>
-        <div class="sidebar-toggle toggle-right">
-            <button class="toggle-btn" onclick="toggleSidebar('right')">Filter</button>
-        </div>
-
         <!-- Overlay for closing sidebars -->
         <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebars()"></div>
 
         <!-- Left Sidebar -->
         <aside class="sidebar left-sidebar" id="leftSidebar">
             <div class="sidebar-section">
-                <div class="sidebar-title">Aktionen</div>
                 <button class="sidebar-button" onclick="openTaskModal()">+ Neue Aufgabe</button>
                 <button class="sidebar-button" onclick="openTemplateModal()">+ Neues Template</button>
                 <button class="sidebar-button" onclick="openTemplateManager()">Templates verwalten</button>
@@ -774,7 +758,6 @@
             </div>
 
             <div class="sidebar-section">
-                <div class="sidebar-title">Kategorien</div>
                 <div id="categoriesList"></div>
             </div>
         </aside>
@@ -787,37 +770,35 @@
         <!-- Right Sidebar -->
         <aside class="sidebar right-sidebar" id="rightSidebar">
             <div class="sidebar-section">
-                <div class="sidebar-title">Ansicht</div>
-                <div class="sidebar-item active" onclick="filterView('all')">Alle Aufgaben</div>
-                <div class="sidebar-item" onclick="filterView('active')">Nur Aktive</div>
-                <div class="sidebar-item" onclick="filterView('deadline')">Nach Deadline</div>
-                <div class="sidebar-item" onclick="filterView('category')">Nach Kategorie</div>
+                <div class="sidebar-button" onclick="filterView('all')">Alle Aufgaben</div>
+                <div class="sidebar-button" onclick="filterView('active')">Nur Aktive</div>
+                <div class="sidebar-button" onclick="filterView('deadline')">Nach Deadline</div>
+                <div class="sidebar-button" onclick="filterView('category')">Nach Kategorie</div>
             </div>
 
             <div class="sidebar-section">
-                <div class="sidebar-title">Statistiken</div>
-                <div class="sidebar-item" onclick="filterUrgency('open')">
+                <div class="sidebar-button stat-item" onclick="filterUrgency('open')">
                     <span>Offen</span>
                     <span class="item-count" id="openCount">0</span>
                 </div>
-                <div class="sidebar-item" onclick="filterUrgency('completed')">
+                <div class="sidebar-button stat-item" onclick="filterUrgency('completed')">
                     <span>Erledigt</span>
                     <span class="item-count" id="completedCount">0</span>
                 </div>
-                <div class="sidebar-item" onclick="filterUrgency('critical')">
-                    <span>🔴 Kritisch</span>
+                <div class="sidebar-button stat-item" onclick="filterUrgency('critical')">
+                    <span>🔴 Kritisch<br><small style="opacity: 0.7;">≤1 Tag Puffer</small></span>
                     <span class="item-count" id="criticalCount">0</span>
                 </div>
-                <div class="sidebar-item" onclick="filterUrgency('urgent')">
-                    <span>🟠 Dringend</span>
+                <div class="sidebar-button stat-item" onclick="filterUrgency('urgent')">
+                    <span>🟠 Dringend<br><small style="opacity: 0.7;">≤3 Tage Puffer</small></span>
                     <span class="item-count" id="urgentCount">0</span>
                 </div>
-                <div class="sidebar-item" onclick="filterUrgency('soon')">
-                    <span>🟡 Bald</span>
+                <div class="sidebar-button stat-item" onclick="filterUrgency('soon')">
+                    <span>🟡 Bald<br><small style="opacity: 0.7;">≤7 Tage Puffer</small></span>
                     <span class="item-count" id="soonCount">0</span>
                 </div>
-                <div class="sidebar-item" onclick="filterUrgency('relaxed')">
-                    <span>🟢 Entspannt</span>
+                <div class="sidebar-button stat-item" onclick="filterUrgency('relaxed')">
+                    <span>🟢 Entspannt<br><small style="opacity: 0.7;">>7 Tage Puffer</small></span>
                     <span class="item-count" id="relaxedCount">0</span>
                 </div>
             </div>
@@ -1177,7 +1158,7 @@
         });
 
         list.innerHTML = categories.map(cat => `
-            <div class="sidebar-item ${currentCategoryFilter === cat ? 'active' : ''}" 
+            <div class="sidebar-button stat-item ${currentCategoryFilter === cat ? 'active' : ''}" 
                  onclick="filterCategory('${cat}')">
                 <span>${cat}</span>
                 <span class="item-count">${categoryTaskCounts[cat]}</span>
